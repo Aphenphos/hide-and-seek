@@ -35,9 +35,18 @@ function resetClasses() {
     boulderButton.classList.remove('face', 'guessed');
 }
 
+const spotMap = new Map();
+spotMap.set('shed', shedButton);
+spotMap.set('tree', treeButton);
+spotMap.set('boulder', boulderButton);
+
 function displayHidingSpots() {
     resetClasses();
 
+    spotMap.get(spot)?.classList.add('face');
+    spotMap.get(guessed).classList.add('guessed');
+
+/* Using element map (learned from david) instead of the messy ifs 
     if (guessed === 'tree') {
         treeButton.classList.add('guessed');
     }
@@ -57,6 +66,8 @@ function displayHidingSpots() {
     if (spot === 'boulder') {
         boulderButton.classList.add('face');
     }
+*/
+
     timeout = setTimeout(resetClasses, 2000);
 }
 
