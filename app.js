@@ -1,51 +1,62 @@
 // import needed modules
-import { getRandomItem, score } from './utils.js';
+import { getRandomItem, } from './utils.js';
 
 // state
 const spots = ['tree', 'boulder', 'shed'];
 let total = 0;
 let wins = 0;
+let losses = 0;
 let spot = '';
 let guessed = '';
 let timeout = 0;
 
 function handleGuess(guess) {
-    // *** Implement Missing Functionality ***
-    // Generate a random spot based on spots array
-    // Use the score function to get a result for guess and actual spot
-    // (You also need to implement the score function)
-    // If the result is 1 (win), increase wins state
-    // Increase total state 
-    // ***
 
-    // Store the guess so we can apply special background
     guessed = guess;
-    // Clear the timeout, in case user is clicking again before
-    // 2 seconds
+
+    spot = getRandomItem(spots);
+    if (spot === guess) wins++; else losses++;
+    total++;
+
     clearTimeout(timeout);
 
-    // update the view
     displayResults();
     displayHidingSpots();
 }
 
-// Hiding Spots Component
+
 const shedButton = document.getElementById('shed-button');
 const treeButton = document.getElementById('tree-button');
 const boulderButton = document.getElementById('boulder-button');
 
 function resetClasses() {
-    // reset face and guess classes
     treeButton.classList.remove('face', 'guessed');
     shedButton.classList.remove('face', 'guessed');
     boulderButton.classList.remove('face', 'guessed');
 }
 
+const spotMap = new Map();
+spotMap.set('shed', shedButton);
+spotMap.set('tree', treeButton);
+spotMap.set('boulder', boulderButton);
+
 function displayHidingSpots() {
-    // clear existing classes
     resetClasses();
 
-    // add face class
+    spotMap.get(spot)?.classList.add('face');
+    spotMap.get(guessed).classList.add('guessed');
+
+/* Using element map (learned from david) instead of the messy ifs 
+    if (guessed === 'tree') {
+        treeButton.classList.add('guessed');
+    }
+    if (guessed === 'boulder') {
+        boulderButton.classList.add('guessed');
+    }
+    if (guessed === 'shed') {
+        shedButton.classList.add('guessed');
+    }
+
     if (spot === 'tree') {
         treeButton.classList.add('face');
     }
@@ -55,22 +66,14 @@ function displayHidingSpots() {
     if (spot === 'boulder') {
         boulderButton.classList.add('face');
     }
+*/
 
-    // *** Implement adding the guessed ***
-    // Similar to adding face class, conditionally
-    // add the 'guessed' class if the guessed state
-    // matches for tree, shed, or boulder
-    // ***
-
-
-    // Clear the face and guessed classes after two seconds
-    // store the timeout so we can clear if user makes
-    // another guess before 2 seconds
     timeout = setTimeout(resetClasses, 2000);
 }
 
 treeButton.addEventListener('click', () => {
     handleGuess('tree');
+
 });
 
 boulderButton.addEventListener('click', () => {
@@ -81,20 +84,20 @@ shedButton.addEventListener('click', () => {
     handleGuess('shed');
 });
 
+    
+const winsDisplay = document.getElementById('wins-display');
+const lossesDisplay = document.getElementById('losses-display');
+const totalDisplay = document.getElementById('total-display');
 
-// Results Component
 
-// *** Implement the Results Component! ***
-// 1. Reference needed DOM elements
-// 2. Implement the displayResults function that updates
-//    the component total, winds, and losses
-//    (derive losses from totals and wins)
-// ***
 function displayResults() {
+
+    winsDisplay.textContent = wins;
+    lossesDisplay.textContent = losses;
+    totalDisplay.textContent = total;
 
 }
 
 
-// page load actions
 displayHidingSpots();
 displayResults();
