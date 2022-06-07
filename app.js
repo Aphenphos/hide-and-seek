@@ -1,5 +1,5 @@
 // import needed modules
-import { getRandomItem, score } from './utils.js';
+import { getRandomItem, } from './utils.js';
 
 // state
 const spots = ['tree', 'boulder', 'shed'];
